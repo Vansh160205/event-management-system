@@ -1,0 +1,98 @@
+# ========================
+# Django / Python .gitignore
+# ========================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Virtual Environments ---
+venv/
+env/
+.venv/
+
+# --- Django ---
+*.log
+*.pot
+*.pyc
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+local_settings.py
+
+# --- Environment & Secrets ---
+.env
+.env.*
+*.env
+
+# --- IDE / Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS / Misc ---
+.DS_Store
+Thumbs.db
+
+# --- Migrations (optional) ---
+# Uncomment below if you don’t want to commit migration files
+# */migrations/
+# !*/migrations/__init__.py
+
+# --- Byte-compiled / cache ---
+*.py[cod]
+__pycache__/
+*.so
+
+# --- Testing / Coverage ---
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.cache
+.pytest_cache/
+
+# --- Build / Packaging ---
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+
+# --- Logs & Dumps ---
+*.log
+*.out
+*.err
+*.pid
+*.gz
+*.jsonl
+
+# --- Jupyter / Notebooks ---
+.ipynb_checkpoints
+
+# --- MyPy / Pyright / Type Checkers ---
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# --- VSCode Workspace Settings (optional) ---
+.vscode/
+.history/
+
+# --- Backup Files ---
+*~
+*.bak
