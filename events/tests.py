@@ -9,11 +9,9 @@ User = get_user_model() # <-- ADDED THIS LINE
 
 class EventManagementTests(APITestCase):
     def setUp(self):
-        # Create users (This will now use your UserProfile model)
         self.user = User.objects.create_user(username="user1", password="pass1234")
         self.user2 = User.objects.create_user(username="user2", password="pass1234")
 
-        # Authenticate user1
         response = self.client.post(reverse('token_obtain_pair'), {
             'username': 'user1',
             'password': 'pass1234'
@@ -21,7 +19,6 @@ class EventManagementTests(APITestCase):
         self.access_token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
 
-        # Create an event by user1
         self.event_data = {
             "title": "Tech Conference",
             "description": "A great event for tech enthusiasts",
@@ -53,7 +50,6 @@ class EventManagementTests(APITestCase):
         """Test retrieving list of public events"""
         response = self.client.get(reverse('event-list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # Note: If you add pagination, this check will change
         self.assertGreaterEqual(len(response.data), 1)
 
     def test_event_detail(self):
@@ -106,7 +102,6 @@ class EventManagementTests(APITestCase):
         self.assertEqual(RSVP.objects.count(), 1)
         self.assertEqual(RSVP.objects.first().status, "Going")
 
-    # ------------------- Review Tests -------------------
 
     def test_add_review(self):
         """Test adding a review to an event"""
@@ -129,12 +124,9 @@ class EventManagementTests(APITestCase):
 
     def test_private_event_invite_access(self):
         """Private event should only be viewable by invited users and organizer"""
-        # Make event private
         self.event.is_public = False
         self.event.save()
 
-        # user2 should NOT be able to view initially
-        # authenticate as user2
         response = self.client.post(reverse('token_obtain_pair'), {
             'username': 'user2',
             'password': 'pass1234'
@@ -145,13 +137,11 @@ class EventManagementTests(APITestCase):
         resp = self.client.get(reverse('event-detail', kwargs={'pk': self.event.id}))
         self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
 
-        # Invite user2
         self.event.invited.add(self.user2)
 
         resp = self.client.get(reverse('event-detail', kwargs={'pk': self.event.id}))
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
-        # Cleanup: authenticate back as user1 for following tests
         resp = self.client.post(reverse('token_obtain_pair'), {
             'username': 'user1',
             'password': 'pass1234'
@@ -161,8 +151,7 @@ class EventManagementTests(APITestCase):
 
     def test_unauthenticated_cannot_create_event(self):
         """Ensure unauthenticated users cannot create events"""
-        # clear auth
-        self.client.credentials()  # removes Authorization header
+        self.client.credentials()
         data = {
             "title": "Public Hack",
             "description": "test",
